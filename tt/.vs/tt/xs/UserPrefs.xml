@@ -1,0 +1,41 @@
+﻿<Properties StartupConfiguration="{232B66C9-3AC1-4E0D-8C97-3FC5BA6D1E5F}|https">
+  <MonoDevelop.Ide.ItemProperties.tt PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="tt/Views/Home/Collection.cshtml">
+    <Files>
+      <File FileName="tt/Controllers/HomeController.cs" />
+      <File FileName="tt/MyDbContext.cs" />
+      <File FileName="tt/Program.cs" />
+      <File FileName="tt/Views/Home/Collection.cshtml" Line="33" Column="18" />
+      <File FileName="tt/Views/Home/Collections.cshtml" Line="45" Column="86" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="tt" expanded="True">
+            <Node name="tt" expanded="True" selected="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="FrameworkReferences" expanded="True" />
+              </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True" />
+              </Node>
+              <Node name="wwwroot" expanded="True">
+                <Node name="css" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/anastysha/Projects/tt/tt/Controllers/HomeController.cs" relfile="tt/Controllers/HomeController.cs" line="106" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>
