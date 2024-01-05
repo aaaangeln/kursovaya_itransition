@@ -6682,11 +6682,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/anastysha/Projects/tt/tt/tt.csproj",
+      "projectUniqueName": "/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/tt.csproj",
       "projectName": "tt",
-      "projectPath": "/Users/anastysha/Projects/tt/tt/tt.csproj",
+      "projectPath": "/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/tt.csproj",
       "packagesPath": "/Users/anastysha/.nuget/packages/",
-      "outputPath": "/Users/anastysha/Projects/tt/tt/obj/",
+      "outputPath": "/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/anastysha/.nuget/NuGet/NuGet.Config"

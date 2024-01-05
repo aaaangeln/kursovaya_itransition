@@ -62,7 +62,6 @@ h1 {
     display: flex;
     justify-content: space-between;
     margin: 0px 20px 0px 20px;
-    padding-bottom: 30px;
 }
 
 #comment__item {
@@ -80,6 +79,7 @@ h1 {
 
 .col-1 {
     width: 60%;
+    margin-right: -100px;
 }
 
 .col-2 {
@@ -167,6 +167,13 @@ color: black;
     #title {
         width: 50%;
     }
+    .col-1 {
+        width: 100%;
+    }
+
+    .col-2 {
+        width: 100%;
+    }
 
 }
 
@@ -174,4 +181,15 @@ color: black;
     #title {
         width: 70%;
     }
+    .col-1 {
+        width: 100%;
+    }
+
+    .col-2 {
+        width: 100%;
+    }
+}
+
+p {
+margin-top: 1 rem;
 }

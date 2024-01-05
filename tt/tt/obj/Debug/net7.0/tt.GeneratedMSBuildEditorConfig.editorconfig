@@ -9,65 +9,65 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = tt
 build_property.RootNamespace = tt
-build_property.ProjectDir = /Users/anastysha/Projects/tt/tt/
+build_property.ProjectDir = /Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/anastysha/Projects/tt/tt
+build_property.MSBuildProjectDirectory = /Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Add.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Auth.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Auth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BdXRoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Collection.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Collection.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db2xsZWN0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Collections.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Collections.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db2xsZWN0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Collections_auth.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Collections_auth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db2xsZWN0aW9uc19hdXRoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Collection_auth.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Collection_auth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db2xsZWN0aW9uX2F1dGguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Login.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Record.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Record.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9SZWNvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Home/Record_auth.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Home/Record_auth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9SZWNvcmRfYXV0aC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Shared/Error.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/_ViewImports.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/_ViewStart.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/anastysha/Projects/tt/tt/Views/Shared/_Layout.cshtml]
+[/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ug0799pvl0

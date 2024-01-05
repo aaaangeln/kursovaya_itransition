@@ -21,7 +21,7 @@
             <a asp-controller="Home" asp-action="Collections">
             <li id="nav__item">КОЛЛЕКЦИИ</li></a>
             <a asp-controller="Home" asp-action="">
-            <li id="nav__item">ЛИЧНЫЙ КАБИНЕТ</li></a>
+            <li id="nav__item">ВОЙТИ В ЛИЧНЫЙ КАБИНЕТ</li></a>
         </ul>
     </div>
 
@@ -33,12 +33,12 @@
                 {
                     <div class="col-md-4">
                         <div class="col">
-                            <a href="item.html">
+                            <a asp-action="Record" asp-controller="Home" asp-route-id="@item.Id">
                                 <h2>@item.Name</h2>
                                 <img src="@item.UrlImage" alt="" class="img-fluid">
                                 <p>@item.Info</p>
-                                <div class="assets">
-                                    <button class="comment__item">оставить комментарий</button>
+                                <div id="assets">
+                                    <button id="comment__item">оставить комментарий</button>
                                     <a><img src="~/Images/like.png" alt="like" width="40px" height="40px"></a>
                                 </div>
                             </a>

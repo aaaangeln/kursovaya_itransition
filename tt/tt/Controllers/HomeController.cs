@@ -51,80 +51,33 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Collections()
-    {
-        MySqlConnection connection = Connection();
-        string query_category = $"SHOW COLUMNS FROM collection LIKE 'category';";
-        MySqlCommand command_category = new MySqlCommand(query_category, connection);
-        MySqlDataReader reader = command_category.ExecuteReader();
-        if (reader.Read())
-        {
-            string enumStr = reader["Type"].ToString();
-            var regex = new Regex("^enum\\('(.*)'\\)$");
-            var matches = regex.Match(enumStr);
-            string enumValuesStr = matches.Groups[1].Value;
-            string[] enumValues = enumValuesStr.Split("','");
-
-            foreach (string value in enumValues)
-            {
-                category.Add(value);
-            }
-        }
-        reader.Close();
-        return View(category);
-    }
-
-    //public void CollectionBooks(string alt)
+    //public IActionResult Collections()
     //{
     //    MySqlConnection connection = Connection();
-    //    string query = $"select * from collection where category='{alt}';";
-    //    MySqlCommand command = new MySqlCommand(query, connection);
-    //    int amount = Convert.ToInt32(command.ExecuteScalar());
-    //    if (amount > 0)
+    //    string query_category = $"SHOW COLUMNS FROM collection LIKE 'category';";
+    //    MySqlCommand command_category = new MySqlCommand(query_category, connection);
+    //    MySqlDataReader reader = command_category.ExecuteReader();
+    //    if (reader.Read())
     //    {
-    //        MySqlDataReader reader = command.ExecuteReader();
-    //        if (reader.Read())
+    //        string enumStr = reader["Type"].ToString();
+    //        var regex = new Regex("^enum\\('(.*)'\\)$");
+    //        var matches = regex.Match(enumStr);
+    //        string enumValuesStr = matches.Groups[1].Value;
+    //        string[] enumValues = enumValuesStr.Split("','");
+
+    //        foreach (string value in enumValues)
     //        {
-    //            Collection model = new Collection();
-    //            model.Id = reader.GetInt32(0);
-    //            model.Email = reader.GetString(1);
-    //            model.Category = reader.GetString(2);
-    //            model.Name = reader.GetString(3);
-    //            model.UrlImage = reader.GetString(4);
-    //            model.Info = reader.GetString(5);
-    //            model.Comment = reader.GetString(6);
-    //            model.Like = reader.GetInt32(7);
-    //            ViewBag.CollectionModel = model;
+    //            category.Add(value);
     //        }
-    //        reader.Close();
     //    }
-    //    //RedirectToAction("Collection");
+    //    reader.Close();
+    //    return View(category);
     //}
 
-    //public void CollectionStamps(string alt) {
-    //    MySqlConnection connection = Connection();
-    //    string query = $"select * from collection where category='{alt}';";
-    //    MySqlCommand command = new MySqlCommand(query, connection);
-    //    int amount = Convert.ToInt32(command.ExecuteScalar());
-    //    if (amount > 0)
-    //    {
-    //        MySqlDataReader reader = command.ExecuteReader();
-    //        if (reader.Read())
-    //        {
-    //            Collection model = new Collection();
-    //            model.Id = reader.GetInt32(0);
-    //            model.Email = reader.GetString(1);
-    //            model.Category = reader.GetString(2);
-    //            model.Name = reader.GetString(3);
-    //            model.UrlImage = reader.GetString(4);
-    //            model.Info = reader.GetString(5);
-    //            model.Comment = reader.GetString(6);
-    //            model.Like = reader.GetInt32(7);
-    //            ViewBag.CollectionModel = model;
-    //        }
-    //        reader.Close();
-    //    }
-    //}
+    public IActionResult Collections()
+    {
+        return View();
+    }
 
     public IActionResult Collection(string alt)
     {
@@ -155,8 +108,32 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Record()
+    public IActionResult Record(int id)
     {
+        MySqlConnection connection = Connection();
+        string query = $"SELECT * FROM collection WHERE id='{id}';";
+
+        MySqlCommand command = new MySqlCommand(query, connection);
+        MySqlDataReader reader = command.ExecuteReader();
+        if (reader.HasRows)
+        {
+            List<Collection> collections = new List<Collection>();
+            while (reader.Read())
+            {
+                Collection model = new Collection();
+                model.Id = reader.GetInt32(0);
+                model.Email = reader.GetString(1);
+                model.Category = reader.GetString(2);
+                model.Name = reader.GetString(3);
+                model.UrlImage = reader.GetString(4);
+                model.Info = reader.GetString(5);
+                collections.Add(model);
+            }
+
+            ViewBag.CollectionModels = collections;
+            return View(collections);
+        }
+        reader.Close();
         return View();
     }
 

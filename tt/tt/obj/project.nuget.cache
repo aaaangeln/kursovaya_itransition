@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GSU+YZvSEycQyCGUgKvs0jeoONxJzs3B2xMeOjcz+2JgqxDmIKa4Gk+P58egA/7LqnXHkI3Me/AaeEas+UioWA==",
+  "dgSpecHash": "Uj0Il5nK4J1xnVsLe1OKQ06gHhtqrtYwz2dEsIN771JAGrQrclSgQ1ubIQGw+luBkBnnmgTDk1bz3mCYOWm9sA==",
   "success": true,
-  "projectFilePath": "/Users/anastysha/Projects/tt/tt/tt.csproj",
+  "projectFilePath": "/Users/anastysha/Documents/GitHub/kursovaya_itransition/tt/tt/tt.csproj",
   "expectedPackageFiles": [
     "/Users/anastysha/.nuget/packages/bouncycastle.cryptography/2.2.1/bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "/Users/anastysha/.nuget/packages/firebasestorage.net/1.0.3/firebasestorage.net.1.0.3.nupkg.sha512",
