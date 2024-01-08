@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Items";
+}
+@model List<Lists>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <a asp-action="" class="header__logo"><img src="~/images/title.png" alt="" width="100%" height="65px" /></a>
+        <form action="">
+            <input type="text" class="searchInput" placeholder="Search" />
+            <input type="button" class="searchBtn" value="" onclick="searchSomething();" />
+        </form>
+        <ul class="header__list">
+            <li class="header__item"><a asp-action="" class="header__link">КОЛЛЕКЦИИ</a></li>
+            <li class="header__item"><a asp-action="" class="header__link">ВОЙТИ В ЛИЧНЫЙ КАБИНЕТ</a></li>
+        </ul>
+    </header>
+    <section>
+        <div class="container">
+            <div class="row">
+                @if (Model != null && Model.Count > 0)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4">
+                            <div class="card__item">
+                                @*<div class="card__cover">
+                                    <img class="card__img" src="@item.ImageUrl" alt="" />
+                                </div>*@
+                                <div class="card__info">
+                                    <div>
+                                        <p class="card__name">@item.Custom_string1_name</p>
+                                        <p class="card__name">@item.Custom_string2_name</p>
+                                        <p class="card__name">@item.Custom_string3_name</p>
+                                        <p class="card__description">@item.Custom_multiline1_name</p>
+                                        <p class="card__description">@item.Custom_multiline2_name</p>
+                                        <p class="card__description">@item.Custom_multiline3_name</p>
+                                    </div>
+                                    @*<p class="card__comment">@item.<span class="like">100</span><img src="~/images/like.png" alt="" width="25px" height="25px" /></p>*@
+                                </div>
+                                <a asp-action="Items" asp-controller="Home" class="card__link">ПОДРОБНЕЕ</a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Данная коллекция пока что ничего не содержит</p>
+                }
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
