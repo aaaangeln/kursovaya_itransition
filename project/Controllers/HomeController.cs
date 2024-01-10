@@ -108,7 +108,8 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Auth(string email, string password) {
+    public IActionResult Auth(string email, string password)
+    {
         if (email == "admin@admin.com")
         {
             if (password == "adminadmin")
@@ -125,40 +126,38 @@ public class HomeController : Controller
         else
         {
             MySqlConnection connection = Connection();
-                string query = $"SELECT COUNT(*) FROM users WHERE email='{email}'";
+            string query = $"SELECT COUNT(*) FROM users WHERE email='{email}'";
 
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                int orgCount = Convert.ToInt32(command.ExecuteScalar());
+                if (orgCount <= 0)
                 {
-                    int orgCount = Convert.ToInt32(command.ExecuteScalar());
-                    if (orgCount <= 0)
+                    string mess = "Пользователя c таким ником нет, зарегистрируйтесь и попробуйте еще раз!";
+                    ViewBag.Message = mess;
+                    return View();
+                }
+                else
+                {
+                    string hashPassword = HashPassword(password);
+                    string query2 = $"select count(*) from users where email='{email}' and password='{hashPassword}'";
+                    MySqlCommand cmd2 = new MySqlCommand(query2, connection);
+                    int count = Convert.ToInt32(cmd2.ExecuteScalar());
+                    if (count == 0)
                     {
-                        string mess = "Пользователя c таким ником нет, зарегистрируйтесь и попробуйте еще раз!";
+                        string mess = "Пароль неверный!";
                         ViewBag.Message = mess;
                         return View();
                     }
                     else
                     {
-                        string hashPassword = HashPassword(password);
-                        string query2 = $"select count(*) from users where email='{email}' and password='{hashPassword}'";
-                        MySqlCommand cmd2 = new MySqlCommand(query2, connection);
-                        int count = Convert.ToInt32(cmd2.ExecuteScalar());
-                        if (count == 0)
-                        {
-                            string mess = "Пароль неверный!";
-                            ViewBag.Message = mess;
-                            return View();
-                        }
-                        else
-                        {
-                            userMail = email;
-                            connection.Close();
-                            return RedirectToAction("Home_auth");
-                        }
+                        userMail = email;
+                        connection.Close();
+                        return RedirectToAction("Home_auth");
                     }
                 }
             }
-        
-        return View();
+        }
     }
 
     public IActionResult Home()
@@ -197,124 +196,109 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Items(int id)
     {
+        List<MyViewModels> modelList = new List<MyViewModels>();
         MySqlConnection connection = Connection();
-        string query = $"SELECT * FROM lists where id_list='{id}';";
+        string query = $"SELECT items.name, items.tags, lists.string1_name, items.string1," +
+            $"lists.string2_name, items.string2, lists.string3_name, items.string3, lists.multiline1_name, items.multiline1," +
+            $"lists.multiline2_name, items.multiline2, lists.multiline3_name, items.multiline3, lists.int1_name, items.int_1, " +
+            $"lists.int2_name, items.int_2, lists.int3_name, items.int_3, lists.checkbox1_name, items.checkbox1," +
+            $"lists.checkbox2_name, items.checkbox2, lists.checkbox3_name, items.checkbox3, " +
+            $"lists.data1_name, items.data1, lists.data2_name, items.data2, " +
+            $"lists.data3_name, items.data3 FROM lists JOIN items ON lists.id_list = items.id_list WHERE id_collection = {id};";
         MySqlCommand command = new MySqlCommand(query, connection);
         MySqlDataReader reader = command.ExecuteReader();
-        if (reader.HasRows)
+        while (reader.Read())
         {
-            List<Lists> lists = new List<Lists>();
-            while (reader.Read())
+            var lists = new Lists();
+            var items = new Items();
+            var model = new MyViewModels()
             {
-                Lists model = new Lists();
-                model.Id_list = reader.GetInt32(0);
-                if (!reader.IsDBNull(2) || reader.GetInt32(1) == 0)
-                {
-                    model.Custom_string1_state = reader.GetInt32(1);
-                    model.Custom_string1_name = reader.GetString(2);
-                }
-                else if (!reader.IsDBNull(4) && reader.GetInt32(3) == 0)
-                {
-                    model.Custom_string2_state = reader.GetInt32(3);
-                    model.Custom_string2_name = reader.GetString(4);
-                }
-                else if (!reader.IsDBNull(6) && reader.GetInt32(5) == 0)
-                {
-                    model.Custom_string3_state = reader.GetInt32(5);
-                    model.Custom_string3_name = reader.GetString(6);
-                }
-                else if (!reader.IsDBNull(8) && reader.GetInt32(7) == 0)
-                {
-                    model.Custom_multiline1_state = reader.GetInt32(7);
-                    model.Custom_multiline1_name = reader.GetString(8);
-                }
-                else if (!reader.IsDBNull(10) && reader.GetInt32(9) == 0)
-                {
-                    model.Custom_multiline2_state = reader.GetInt32(9);
-                    model.Custom_multiline2_name = reader.GetString(10);
-                }
-                else if (!reader.IsDBNull(12) && reader.GetInt32(11) == 0)
-                {
-                    model.Custom_multiline3_state = reader.GetInt32(11);
-                    model.Custom_multiline3_name = reader.GetString(12);
-                }
-                else if (!reader.IsDBNull(14) && reader.GetInt32(13) == 0)
-                {
-                    model.Custom_int1_state = reader.GetInt32(13);
-                    model.Custom_int1_name = reader.GetString(14);
-                }
-                else if (!reader.IsDBNull(16) && reader.GetInt32(15) == 0)
-                {
-                    model.Custom_int2_state = reader.GetInt32(15);
-                    model.Custom_int2_name = reader.GetString(16);
-                }
-                else if (!reader.IsDBNull(18) && reader.GetInt32(17) == 0)
-                {
-                    model.Custom_int3_state = reader.GetInt32(17);
-                    model.Custom_int3_name = reader.GetString(18);
-                }
-                else if (!reader.IsDBNull(20) && reader.GetInt32(19) == 0)
-                {
-                    model.Custom_checkbox1_state = reader.GetInt32(19);
-                    model.Custom_checkbox1_name = reader.GetString(20);
-                }
-                else if (!reader.IsDBNull(22) && reader.GetInt32(21) == 0)
-                {
-                    model.Custom_checkbox2_state = reader.GetInt32(21);
-                    model.Custom_checkbox2_name = reader.GetString(22);
-                }
-                else if (!reader.IsDBNull(24) && reader.GetInt32(23) == 0)
-                {
-                    model.Custom_checkbox3_state = reader.GetInt32(23);
-                    model.Custom_checkbox3_name = reader.GetString(24);
-                }
-                else if (!reader.IsDBNull(26) && reader.GetInt32(25) == 0)
-                {
-                    model.Custom_data1_state = reader.GetInt32(25);
-                    model.Custom_data1_name = reader.GetString(26);
-                }
-                else if (!reader.IsDBNull(28) && reader.GetInt32(27) == 0)
-                {
-                    model.Custom_data2_state = reader.GetInt32(27);
-                    model.Custom_data2_name = reader.GetString(28);
-                }
-                else if (!reader.IsDBNull(30) && reader.GetInt32(29) == 0)
-                {
-                    model.Custom_data3_state = reader.GetInt32(29);
-                    model.Custom_data3_name = reader.GetString(30);
-                }
-                lists.Add(model);
+                Lists = lists,
+                Items = items
+            };
+            model.Items.Name = reader.GetString(0);
+            model.Items.Tags = reader.GetString(1);
+            if (!reader.IsDBNull(2) && !reader.IsDBNull(3))
+            {
+                model.Lists.String1_name = reader.GetString(2);
+                model.Items.String1 = reader.GetString(3);
             }
-            ViewBag.ListsModel = lists;
-            return RedirectToAction("Items", lists);
+            if (!reader.IsDBNull(4) && !reader.IsDBNull(5))
+            {
+                model.Lists.String2_name = reader.GetString(4);
+                model.Items.String2 = reader.GetString(5);
+            }
+            if (!reader.IsDBNull(6) && !reader.IsDBNull(7))
+            {
+                model.Lists.String3_name = reader.GetString(6);
+                model.Items.String3 = reader.GetString(7);
+            }
+            if (!reader.IsDBNull(8) && !reader.IsDBNull(9))
+            {
+                model.Lists.Multiline1_name = reader.GetString(8);
+                model.Items.Multiline1 = reader.GetString(9);
+            }
+            if (!reader.IsDBNull(10) && !reader.IsDBNull(11))
+            {
+                model.Lists.Multiline2_name = reader.GetString(10);
+                model.Items.Multiline2 = reader.GetString(11);
+            }
+            if (!reader.IsDBNull(12) && !reader.IsDBNull(13))
+            {
+                model.Lists.Multiline3_name = reader.GetString(12);
+                model.Items.Multiline3 = reader.GetString(13);
+            }
+            if (!reader.IsDBNull(14) && reader.GetInt32(15) != 0)
+            {
+                model.Lists.Int1_name = reader.GetString(14);
+                model.Items.Int1 = reader.GetInt32(15);
+            }
+            if (!reader.IsDBNull(16) && reader.GetInt32(17) != 0)
+            {
+                model.Lists.Int2_name = reader.GetString(16);
+                model.Items.Int2 = reader.GetInt32(17);
+            }
+            if (!reader.IsDBNull(18) && reader.GetInt32(19) != 0)
+            {
+                model.Lists.Int3_name = reader.GetString(18);
+                model.Items.Int3 = reader.GetInt32(19);
+            }
+            if (!reader.IsDBNull(20) && reader.GetInt32(21) != 0)
+            {
+                model.Lists.Checkbox1_name = reader.GetString(20);
+                model.Items.Checkbox1 = (Checkbox)reader.GetInt32(21);
+            }
+            if (!reader.IsDBNull(22) && reader.GetInt32(23) != 0)
+            {
+                model.Lists.Checkbox2_name = reader.GetString(22);
+                model.Items.Checkbox2 = (Checkbox)reader.GetInt32(23);
+            }
+            if (!reader.IsDBNull(24) && reader.GetInt32(25) != 0)
+            {
+                model.Lists.Checkbox3_name = reader.GetString(24);
+                model.Items.Checkbox3 = (Checkbox)reader.GetInt32(25);
+            }
+            if (!reader.IsDBNull(26) && reader.GetInt32(27) != 0)
+            {
+                model.Lists.Data1_name = reader.GetString(26);
+                model.Items.Data1 = reader.GetDateTime(27);
+            }
+            if (!reader.IsDBNull(28) && reader.GetInt32(29) != 0)
+            {
+                model.Lists.Data2_name = reader.GetString(28);
+                model.Items.Data2 = reader.GetDateTime(29);
+            }
+            if (!reader.IsDBNull(30) && reader.GetInt32(31) != 0)
+            {
+                model.Lists.Data3_name = reader.GetString(30);
+                model.Items.Data3 = reader.GetDateTime(31);
+            }
+            modelList.Add(model);
         }
         reader.Close();
-        return View();
+        connection.Close();
+        return View(modelList);
     }
-
-
-    //public IActionResult Items()
-    //{
-    //    MySqlConnection connection = Connection();
-    //    string query = $"SELECT * FROM lists;";
-    //    MySqlCommand command = new MySqlCommand(query, connection);
-    //    MySqlDataReader reader = command.ExecuteReader();
-    //    if (reader.HasRows)
-    //    {
-    //        List<Lists> lists = new List<Lists>();
-    //        while (reader.Read())
-    //        {
-    //            Lists model = new Lists();
-    //            model.Id_list = reader.GetInt32(0);
-                
-    //            lists.Add(model);
-    //        }
-    //        ViewBag.CollectionModels = lists;
-    //        return View(lists);
-    //    }
-    //    reader.Close();
-    //    return View();
-    //}
 
     public IActionResult Add()
     {
@@ -394,7 +378,8 @@ public class HomeController : Controller
             command_collections.ExecuteNonQuery();
             connection.Close();
         }
-        else {
+        else
+        {
             MySqlConnection connection = Connection();
             string imageUrl = await Updownload(image);
             string query_collections = $"INSERT INTO `collections`(`id_collection`, `email`, `name`, `description`, `imageUrl`, `category`, `id_list`) " +
@@ -420,15 +405,12 @@ public class HomeController : Controller
         return null;
     }
 
-
-
     public MySqlConnection Connection()
     {
         MySqlConnection connection = new MySqlConnection("Server=mysql6013.site4now.net;Database=db_aa373f_root;Uid=aa373f_root;Pwd=rootroot1;Charset=utf8;");
         connection.Open();
         return connection;
     }
-
 
     public string HashPassword(string pass)
     {

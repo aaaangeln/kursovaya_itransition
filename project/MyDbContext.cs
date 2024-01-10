@@ -8,6 +8,7 @@ namespace project
         //public DbSet<Photo> Photos { get; set; }
         public DbSet<Collections> Collections { get; set; }
         public DbSet<Lists> Lists { get; set; }
+        public DbSet<MyViewModels> myViewModels { get; set; }
 
         // Other DbSet properties and configuration
 

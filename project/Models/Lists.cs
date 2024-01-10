@@ -4,36 +4,37 @@ namespace project.Models
     public class Lists
     {
         public int Id_list { get; set; }
-        public int Custom_string1_state { get; set; }
-        public string Custom_string1_name { get; set; }
-        public int Custom_string2_state { get; set; }
-        public string Custom_string2_name { get; set; }
-        public int Custom_string3_state { get; set; }
-        public string Custom_string3_name { get; set; }
-        public int Custom_multiline1_state { get; set; }
-        public string Custom_multiline1_name { get; set; }
-        public int Custom_multiline2_state { get; set; }
-        public string Custom_multiline2_name { get; set; }
-        public int Custom_multiline3_state { get; set; }
-        public string Custom_multiline3_name { get; set; }
-        public int Custom_int1_state { get; set; }
-        public string Custom_int1_name { get; set; }
-        public int Custom_int2_state { get; set; }
-        public string Custom_int2_name { get; set; }
-        public int Custom_int3_state { get; set; }
-        public string Custom_int3_name { get; set; }
-        public int Custom_checkbox1_state { get; set; }
-        public string Custom_checkbox1_name { get; set; }
-        public int Custom_checkbox2_state { get; set; }
-        public string Custom_checkbox2_name { get; set; }
-        public int Custom_checkbox3_state { get; set; }
-        public string Custom_checkbox3_name { get; set; }
-        public int Custom_data1_state { get; set; }
-        public string Custom_data1_name { get; set; }
-        public int Custom_data2_state { get; set; }
-        public string Custom_data2_name { get; set; }
-        public int Custom_data3_state { get; set; }
-        public string Custom_data3_name { get; set; }
+        public int Id_collection { get; set; }
+        public int String1_state { get; set; }
+        public string String1_name { get; set; }
+        public int String2_state { get; set; }
+        public string String2_name { get; set; }
+        public int String3_state { get; set; }
+        public string String3_name { get; set; }
+        public int Multiline1_state { get; set; }
+        public string Multiline1_name { get; set; }
+        public int Multiline2_state { get; set; }
+        public string Multiline2_name { get; set; }
+        public int Multiline3_state { get; set; }
+        public string Multiline3_name { get; set; }
+        public int Int1_state { get; set; }
+        public string Int1_name { get; set; }
+        public int Int2_state { get; set; }
+        public string Int2_name { get; set; }
+        public int Int3_state { get; set; }
+        public string Int3_name { get; set; }
+        public int Checkbox1_state { get; set; }
+        public string Checkbox1_name { get; set; }
+        public int Checkbox2_state { get; set; }
+        public string Checkbox2_name { get; set; }
+        public int Checkbox3_state { get; set; }
+        public string Checkbox3_name { get; set; }
+        public int Data1_state { get; set; }
+        public string Data1_name { get; set; }
+        public int Data2_state { get; set; }
+        public string Data2_name { get; set; }
+        public int Data3_state { get; set; }
+        public string Data3_name { get; set; }
     }
 }
 
