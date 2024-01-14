@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Админ";
+}
+@model List<MyViewModels>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div id="MyPopup" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="color: black;">УВЕДОМЛЕНИЕ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="lblError" style="color: black;"></h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>$('.message a').click(function () {
+            $('form').animate({
+                height: "toggle",
+                opacity: "toggle"
+            }, "slow");
+        });</script>
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                document.querySelector("#lblError").innerHTML = '@Html.Raw(ViewBag.Message)';
+                $("#MyPopup").modal("show");
+            };
+        </script>
+    }
+    <header class="header">
+        <a asp-action="Admin" asp-controller="Home" class="header__logo"><img src="~/images/title.png" alt="" width="100%" height="65px" /></a>
+        @*<form action="">
+                <input type="text" class="Input" placeholder="Search" />
+                <input type="button" class="searchBtn" value="" onclick="searchSomething();" />
+            </form>*@
+        @*<ul class="header__list">
+                <li class="header__item"><a asp-action="Home_auth" class="header__link">КОЛЛЕКЦИИ</a></li>
+            </ul>*@
+    </header>
+    <section>
+        <div class="container">
+            <div class="toolbar" style="display: flex; gap: 30px; margin-bottom: 20px;">
+                <form id="yourFormId_block" method="post" asp-action="Block" asp-controller="Home">
+                    <button class="btn btn-primary" onclick="submitForm('yourFormId_block')">Block</button>
+                    <input type="hidden" name="selectedBlock" id="selectedBlockIndices" />
+                </form>
+
+                <form id="yourFormId_unblock" method="post" asp-action="Unblock" asp-controller="Home">
+                    <button class="btn btn-primary" onclick="submitForm('yourFormId_unblock')">Unblock</button>
+                    <input type="hidden" name="selectedUnblock" id="selectedUnblockIndices" />
+                </form>
+
+                <a class="btn btn-danger" asp-action="Auth" asp-controller="Home">Выйти из аккаунта</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="table-checkbox-header"><input type="checkbox" id="selectAllCheckbox" /></th>
+                            <th>Email</th>
+                            <th>State</th>
+                            <th>Dostup</th>
+                            <th>Delete</th>
+                            <th>Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <form method="post" asp-action="Admin" asp-controller="Home" enctype="multipart/form-data">
+                            <tr>
+                                <td class="table-checkbox"><input type="checkbox" /></td>
+                                <td>
+                                    <input type="hidden" name="id" value="@user.Users.Id" style="width: 100%;" />
+                                    <input type="text" name="email" value="@user.Users.Email" style="width: 100%;" />
+                                </td>
+                                <td>
+                                    <select name="state">
+                                        <option value="admin" selected="@((user.Users.State == "admin") ? "selected" : null)">admin</option>
+                                        <option value="user" selected="@((user.Users.State == "user") ? "selected" : null)">user</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    @user.Users.Dostup
+                                </td>
+                                <td><button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button></td>
+                                <td><button type="submit" name="action" value="save" class="btn btn-primary">Save</button></td>
+                            </tr>
+                            </form>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </section>
+    <script>function submitForm(formId) {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            var selectedIds = [];
+
+            checkboxes.forEach(function (checkbox) {
+                var selectedId = checkbox.parentNode.nextElementSibling.textContent;
+                selectedIds.push(selectedId);
+            });
+
+            // Set the value of the hidden input field with the selected indices
+            document.getElementById('selectedBlockIndices').value = selectedIds.join(',');
+            document.getElementById('selectedUnblockIndices').value = selectedIds.join(',');
+            document.getElementById(formId).submit();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            selectAllCheckbox.addEventListener('click', function () {
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+        });</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

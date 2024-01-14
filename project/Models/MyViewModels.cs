@@ -6,6 +6,7 @@ namespace project.Models
         public Collections Collections { get; set; }
         public Lists Lists { get; set; }
         public Items Items { get; set; }
+        public Users Users { get; set; }
     }
 }
 

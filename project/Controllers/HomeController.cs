@@ -1,11 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using Firebase.Storage;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using project.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace project.Controllers;
 
@@ -13,6 +16,7 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     public static string? userMail;
+    public static string? reuserMail;
 
     public HomeController(ILogger<HomeController> logger)
     {
@@ -22,6 +26,124 @@ public class HomeController : Controller
     public IActionResult Auth()
     {
         return View();
+    }
+
+    public IActionResult Admin()
+    {
+        List<MyViewModels> modelList = new List<MyViewModels>();
+        MySqlConnection connection = Connection();
+        string users_query = $"SELECT id_user, email, state, dostup FROM users;";
+        MySqlCommand users_command = new MySqlCommand(users_query, connection);
+        MySqlDataReader users_reader = users_command.ExecuteReader();
+        while (users_reader.Read())
+        {
+            var users = new Users()
+            {
+                Id = Convert.ToInt32(users_reader["id_user"]),
+                Email = users_reader["email"].ToString(),
+                State = users_reader["state"].ToString(),
+                Dostup = users_reader["dostup"].ToString()
+            };
+            var model = new MyViewModels()
+            {
+                Users = users
+            };
+            modelList.Add(model);
+        }
+        return View(modelList);
+    }
+
+
+    [HttpPost]
+    public IActionResult Admin(string email, string state, int id, string action)
+    {
+        MySqlConnection connection = Connection();
+        if (action == "delete")
+        {
+            string users_query = $"DELETE FROM users WHERE id_user='{id}';";
+            MySqlCommand users_command = new MySqlCommand(users_query, connection);
+            int amount = Convert.ToInt32(users_command.ExecuteScalar());
+            if (amount > 1)
+            {
+                string message = "Запись успешно удалена!";
+                ViewBag.Message = message;
+            }
+        }
+        else if (action == "save")
+        {
+            string users_query = $"UPDATE users SET email='{email}', state='{state}' where id_user='{id}';";
+            MySqlCommand users_command = new MySqlCommand(users_query, connection);
+            int amount = Convert.ToInt32(users_command.ExecuteScalar());
+            if (amount > 1)
+            {
+                string message = "Запись успешно обнавлена!";
+                ViewBag.Message = message;
+            }
+        }
+        return RedirectToAction("Admin");
+    }
+
+    [HttpPost]
+    public IActionResult Block(string selectedBlock)
+    {
+        var indices = selectedBlock.Split(',');
+        MySqlConnection connection = Connection();
+        connection.Open();
+        foreach (var index in indices)
+        {
+            int id = int.Parse(index);
+            string query = $"UPDATE users SET dostup='blocked' WHERE id_user={id};";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.ExecuteNonQuery();
+                Block_you(id);
+            }
+        }
+        if (reuserMail == userMail)
+        {
+            return RedirectToAction("Auth");
+        }
+        else
+        {
+            return RedirectToAction("Admin");
+        }
+
+    }
+
+    public void Block_you(int id)
+    {
+        MySqlConnection connection = Connection();
+        connection.Open();
+        string query = $"SELECT email FROM users WHERE dostup='blocked' and id_user='{id}';";
+        using (MySqlCommand command = new MySqlCommand(query, connection))
+        {
+            command.ExecuteNonQuery();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                string value = reader.GetString(0);
+                reuserMail = value;
+            }
+            connection.Close();
+        }
+    }
+
+    [HttpPost]
+    public IActionResult Unblock(string selectedUnblock)
+    {
+        var indices = selectedUnblock.Split(',');
+        MySqlConnection connection = Connection();
+        connection.Open();
+        foreach (var index in indices)
+        {
+            int id = int.Parse(index);
+            string query = $"UPDATE users SET dostup='active' WHERE id_user={id};";
+            using (MySqlCommand command = new MySqlCommand(query, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+        }
+        return RedirectToAction("Admin");
     }
 
     public IActionResult Login()
@@ -110,50 +232,58 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Auth(string email, string password)
     {
-        if (email == "admin@admin.com")
+
+        MySqlConnection connection = Connection();
+        string query = $"SELECT COUNT(*) FROM users WHERE email='{email}'";
+
+        using (MySqlCommand command = new MySqlCommand(query, connection))
         {
-            if (password == "adminadmin")
+            int orgCount = Convert.ToInt32(command.ExecuteScalar());
+            if (orgCount <= 0)
             {
-                return Redirect("/Home/Admin");
-            }
-            else
-            {
-                string mess = "Пароль неверный!";
+                string mess = "Пользователя c таким ником нет, зарегистрируйтесь и попробуйте еще раз!";
                 ViewBag.Message = mess;
                 return View();
             }
-        }
-        else
-        {
-            MySqlConnection connection = Connection();
-            string query = $"SELECT COUNT(*) FROM users WHERE email='{email}'";
-
-            using (MySqlCommand command = new MySqlCommand(query, connection))
+            else
             {
-                int orgCount = Convert.ToInt32(command.ExecuteScalar());
-                if (orgCount <= 0)
+                string hashPassword = HashPassword(password);
+                string query2 = $"select count(*) from users where email='{email}' and password='{hashPassword}';";
+                MySqlCommand cmd2 = new MySqlCommand(query2, connection);
+                int count = Convert.ToInt32(cmd2.ExecuteScalar());
+                if (count == 0)
                 {
-                    string mess = "Пользователя c таким ником нет, зарегистрируйтесь и попробуйте еще раз!";
+                    string mess = "Пароль неверный!";
                     ViewBag.Message = mess;
                     return View();
                 }
                 else
                 {
-                    string hashPassword = HashPassword(password);
-                    string query2 = $"select count(*) from users where email='{email}' and password='{hashPassword}'";
-                    MySqlCommand cmd2 = new MySqlCommand(query2, connection);
-                    int count = Convert.ToInt32(cmd2.ExecuteScalar());
-                    if (count == 0)
+                    string query_dostup = $"select count(*) from users where email='{email}' and dostup='active';";
+                    MySqlCommand cmd_dostup = new MySqlCommand(query_dostup, connection);
+                    int count1 = Convert.ToInt32(cmd_dostup.ExecuteScalar());
+                    if (count1 == 0)
                     {
-                        string mess = "Пароль неверный!";
+                        string mess = "Ваш аккаунт заблокирован!";
                         ViewBag.Message = mess;
                         return View();
                     }
                     else
                     {
-                        userMail = email;
-                        connection.Close();
-                        return RedirectToAction("Home_auth");
+                        string query3 = $"select count(*) from users where email='{email}' and state='user';";
+                        MySqlCommand cmd3 = new MySqlCommand(query3, connection);
+                        int count3 = Convert.ToInt32(cmd3.ExecuteScalar());
+                        if (count3 == 0)
+                        {
+                            connection.Close();
+                            return RedirectToAction("Admin");
+                        }
+                        else
+                        {
+                            userMail = email;
+                            connection.Close();
+                            return RedirectToAction("Home_auth");
+                        }
                     }
                 }
             }
@@ -427,4 +557,3 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
-
