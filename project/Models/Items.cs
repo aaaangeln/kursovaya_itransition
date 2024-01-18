@@ -3,6 +3,7 @@ namespace project.Models
 {
     public class Items
     {
+        public int Id_item { get; set; }
         public int Id_list { get; set; }
         public string Name { get; set; }
         public string Tags { get; set; }

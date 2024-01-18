@@ -40,8 +40,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JdGVtcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/anastysha/Projects/project/project/Views/Home/Kabinet.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9LYWJpbmV0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/anastysha/Projects/project/project/Views/Home/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Mb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/anastysha/Projects/project/project/Views/Home/Table.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9UYWJsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/anastysha/Projects/project/project/Views/Home/YouCollections.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Zb3VDb2xsZWN0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/anastysha/Projects/project/project/Views/Shared/Error.cshtml]
