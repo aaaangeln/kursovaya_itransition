@@ -1,6 +1,4 @@
-﻿@{
-    ViewData["Title"] = "YouCollections";
-}
+﻿@model List<MyViewModels>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -30,6 +28,7 @@
         </div>
     </div>
 
+
     <script>$('.message a').click(function () {
             $('form').animate({
                 height: "toggle",
@@ -39,12 +38,13 @@
     @if (ViewBag.Message != null)
     {
         <script type="text/javascript">
-            window.onload = function () {
-                document.querySelector("#lblError").innerHTML = '@Html.Raw(ViewBag.Message)';
-                $("#MyPopup").modal("show");
-            };
+        $(document).ready(function () {
+            $('#lblError').text('@Html.Raw(ViewBag.Message)');
+            $('#MyPopup').modal('show');
+        });
         </script>
     }
+
     <header class="header">
         <a asp-action="" class="header__logo"><img src="~/images/title.png" alt="" width="100%" height="65px" /></a>
         <form action="">
@@ -59,92 +59,97 @@
     <section>
         <div class="container">
             <div class="table-responsive">
-                @foreach (var mod in Model)
-                {
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Название</th>
-                                <th>Теги</th>
-                                @if (!string.IsNullOrEmpty(@mod.Lists.String1_name) && !string.IsNullOrEmpty(@mod.Items.String1))
-                                {
-                                    <th>@mod.Lists.String1_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.String2_name) && !string.IsNullOrEmpty(@mod.Items.String2))
-                                {
-                                    <th>@mod.Lists.String2_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.String3_name) && !string.IsNullOrEmpty(@mod.Items.String3))
-                                {
-                                    <th>@mod.Lists.String3_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Multiline1_name) && !string.IsNullOrEmpty(@mod.Items.Multiline1))
-                                {
-                                    <th>@mod.Lists.Multiline1_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Multiline2_name) && !string.IsNullOrEmpty(@mod.Items.Multiline2))
-                                {
-                                    <th>@mod.Lists.Multiline2_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Multiline3_name) && !string.IsNullOrEmpty(@mod.Items.Multiline3))
-                                {
-                                    <th>@mod.Lists.Multiline3_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Int1_name) && !string.IsNullOrEmpty(@mod.Items.Int1.ToString()))
-                                {
-                                    <th>@mod.Lists.Int1_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Int2_name) && !string.IsNullOrEmpty(@mod.Items.Int2.ToString()))
-                                {
-                                    <th>@mod.Lists.Int2_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Int3_name) && !string.IsNullOrEmpty(@mod.Items.Int3.ToString()))
-                                {
-                                    <th>@mod.Lists.Int3_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox1_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox1.ToString()))
-                                {
-                                    <th>@mod.Lists.Checkbox1_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox2_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox2.ToString()))
-                                {
-                                    <th>@mod.Lists.Checkbox2_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox3_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox3.ToString()))
-                                {
-                                    <th>@mod.Lists.Checkbox3_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Data1_name) && !string.IsNullOrEmpty(@mod.Items.Data1.ToString()))
-                                {
-                                    <th>@mod.Lists.Data1_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Data2_name) && !string.IsNullOrEmpty(@mod.Items.Data2.ToString()))
-                                {
-                                    <th>@mod.Lists.Data2_name</th>
-                                }
-                                @if (!string.IsNullOrEmpty(@mod.Lists.Data3_name) && !string.IsNullOrEmpty(@mod.Items.Data3.ToString()))
-                                {
-                                    <th>@mod.Lists.Data3_name</th>
-                                }
-                                <th>Update</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
 
-                            <form method="post" asp-action="YouCollections" asp-controller="Home" enctype="multipart/form-data">
-                            <tr>
-                                <td>
-                                    <input type="hidden" name="id" value="@mod.Items.Id_item" />
-                                    <input name="name" value="@mod.Items.Name" />
-                                </td>
-                                <td>
-                                    <input name="description" value="@mod.Items.Tags" />
-                                </td>
+                @if (Model != null)
+                {
+                    @foreach (var mod in Model)
+                    {
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Теги</th>
                                     @if (!string.IsNullOrEmpty(@mod.Lists.String1_name) && !string.IsNullOrEmpty(@mod.Items.String1))
                                     {
-                                       <td> <input name="string1" value="@mod.Items.String1" />
+                                        <th>@mod.Lists.String1_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.String2_name) && !string.IsNullOrEmpty(@mod.Items.String2))
+                                    {
+                                        <th>@mod.Lists.String2_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.String3_name) && !string.IsNullOrEmpty(@mod.Items.String3))
+                                    {
+                                        <th>@mod.Lists.String3_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Multiline1_name) && !string.IsNullOrEmpty(@mod.Items.Multiline1))
+                                    {
+                                        <th>@mod.Lists.Multiline1_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Multiline2_name) && !string.IsNullOrEmpty(@mod.Items.Multiline2))
+                                    {
+                                        <th>@mod.Lists.Multiline2_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Multiline3_name) && !string.IsNullOrEmpty(@mod.Items.Multiline3))
+                                    {
+                                        <th>@mod.Lists.Multiline3_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Int1_name) && !string.IsNullOrEmpty(@mod.Items.Int1.ToString()))
+                                    {
+                                        <th>@mod.Lists.Int1_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Int2_name) && !string.IsNullOrEmpty(@mod.Items.Int2.ToString()))
+                                    {
+                                        <th>@mod.Lists.Int2_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Int3_name) && !string.IsNullOrEmpty(@mod.Items.Int3.ToString()))
+                                    {
+                                        <th>@mod.Lists.Int3_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox1_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox1.ToString()))
+                                    {
+                                        <th>@mod.Lists.Checkbox1_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox2_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox2.ToString()))
+                                    {
+                                        <th>@mod.Lists.Checkbox2_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox3_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox3.ToString()))
+                                    {
+                                        <th>@mod.Lists.Checkbox3_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Data1_name) && !string.IsNullOrEmpty(@mod.Items.Data1.ToString()))
+                                    {
+                                        <th>@mod.Lists.Data1_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Data2_name) && !string.IsNullOrEmpty(@mod.Items.Data2.ToString()))
+                                    {
+                                        <th>@mod.Lists.Data2_name</th>
+                                    }
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.Data3_name) && !string.IsNullOrEmpty(@mod.Items.Data3.ToString()))
+                                    {
+                                        <th>@mod.Lists.Data3_name</th>
+                                    }
+                                    <th>Update</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <form method="post" asp-action="YouCollections" asp-controller="Home" enctype="multipart/form-data">
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="id" value="@mod.Items.Id_item" />
+                                        <input name="name" value="@mod.Items.Name" />
                                     </td>
+                                    <td>
+                                        <input name="tags" value="@mod.Items.Tags" />
+                                    </td>
+                                    @if (!string.IsNullOrEmpty(@mod.Lists.String1_name) && !string.IsNullOrEmpty(@mod.Items.String1))
+                                    {
+                                        <td>
+                                            <input name="string1" value="@mod.Items.String1" />
+                                        </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.String2_name) && !string.IsNullOrEmpty(@mod.Items.String2))
                                     {
@@ -161,84 +166,91 @@
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Multiline1_name) && !string.IsNullOrEmpty(@mod.Items.Multiline1))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Multiline1" />
+                                            <input name="multiline1" value="@mod.Items.Multiline1" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Multiline2_name) && !string.IsNullOrEmpty(@mod.Items.Multiline2))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Multiline2" />
+                                            <input name="multiline2" value="@mod.Items.Multiline2" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Multiline3_name) && !string.IsNullOrEmpty(@mod.Items.Multiline3))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Multiline3" />
+                                            <input name="multiline3" value="@mod.Items.Multiline3" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Int1_name) && !string.IsNullOrEmpty(@mod.Items.Int1.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Int1" />
+                                            <input name="int1" value="@mod.Items.Int1" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Int2_name) && !string.IsNullOrEmpty(@mod.Items.Int2.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Int2" />
+                                            <input name="int2" value="@mod.Items.Int2" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Int3_name) && !string.IsNullOrEmpty(@mod.Items.Int3.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Int3" />
+                                            <input name="int3" value="@mod.Items.Int3" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox1_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox1.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Checkbox1" />
+                                            <input name="checkbox1" value="@mod.Items.Checkbox1" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox2_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox2.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Checkbox2" />
+                                            <input name="checkbox2" value="@mod.Items.Checkbox2" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox3_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox3.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Checkbox3" />
+                                            <input name="checkbox3" value="@mod.Items.Checkbox3" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Data1_name) && !string.IsNullOrEmpty(@mod.Items.Data1.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Data1" />
+                                            <input name="data1" value="@mod.Items.Data1" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Data2_name) && !string.IsNullOrEmpty(@mod.Items.Data2.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Data2" />
+                                            <input name="data2" value="@mod.Items.Data2" />
                                         </td>
                                     }
                                     @if (!string.IsNullOrEmpty(@mod.Lists.Data3_name) && !string.IsNullOrEmpty(@mod.Items.Data3.ToString()))
                                     {
                                         <td>
-                                            <input name="description" value="@mod.Items.Data3" />
+                                            <input name="data3" value="@mod.Items.Data3" />
                                         </td>
                                     }
-                                
-                                <td><button type="submit" name="action" value="update" class="btn btn-primary">Update</button></td>
-                                <td><button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button></td>
-                            </tr>
-                            </form>
+                                    <td><button type="submit" name="action" value="update" class="btn btn-primary">Update</button></td>
+                                    <td><button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button></td>
+                                </tr>
+                                </form>
+                            </tbody>
+                        </table>
 
-                        </tbody>
-                    </table>
+                    }
+
                 }
+                else
+                {
+                    <h2>Нет айтемов для этой коллекции</h2>
+                    <a class="btn btn-primary" asp-controller="Home" asp-action="Table">Вернуться к коллекциям</a>
+                }
+
             </div>
         </div>
     </section>

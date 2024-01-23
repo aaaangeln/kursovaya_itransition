@@ -19,9 +19,9 @@ namespace project.Models
         public Checkbox Checkbox1 { get; set; }
         public Checkbox Checkbox2 { get; set; }
         public Checkbox Checkbox3 { get; set; }
-        public DateTime Data1 { get; set; }
-        public DateTime Data2 { get; set; }
-        public DateTime Data3 { get; set; }
+        public string Data1 { get; set; }
+        public string Data2 { get; set; }
+        public string Data3 { get; set; }
     }
     public enum Checkbox
     {

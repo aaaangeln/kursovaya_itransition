@@ -14,12 +14,12 @@
     <header class="header">
         <a asp-action="" class="header__logo"><img src="~/images/title.png" alt="" width="100%" height="65px" /></a>
         <form action="">
-            <input type="text" class="searchInput" placeholder="Search" />
+            <input type="text" class="Input" placeholder="Search" />
             <input type="button" class="searchBtn" value="" onclick="searchSomething();" />
         </form>
         <ul class="header__list">
             <li class="header__item"><a asp-action="Home_auth" class="header__link">КОЛЛЕКЦИИ</a></li>
-            <li class="header__item"><a asp-action="" class="header__link">ВОЙТИ В ЛИЧНЫЙ КАБИНЕТ</a></li>
+            <li class="header__item"><a asp-action="Kabinet" class="header__link">ЛИЧНЫЙ КАБИНЕТ</a></li>
         </ul>
     </header>
     <section>

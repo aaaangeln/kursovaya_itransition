@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using project.Models;
+using static System.Collections.Specialized.BitVector32;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace project.Controllers;
@@ -27,6 +30,84 @@ public class HomeController : Controller
     public IActionResult Table()
     {
         MySqlConnection connection = Connection();
+        string query = $"SELECT * FROM collections join users on users.id_user=collections.id_user where users.email='{userMail}';";
+        MySqlCommand command = new MySqlCommand(query, connection);
+        MySqlDataReader reader = command.ExecuteReader();
+        if (reader.HasRows)
+        {
+            List<Collections> collections = new List<Collections>();
+            while (reader.Read())
+            {
+                Collections model = new Collections();
+                model.Id_collection = reader.GetInt32(0);
+                model.Email = reader.GetString(1);
+                model.Name = reader.GetString(2);
+                model.Description = reader.GetString(3);
+                model.ImageUrl = reader.GetString(4);
+                model.Category = reader.GetString(5);
+                collections.Add(model);
+            }
+            ViewBag.CollectionModels = collections;
+            return View(collections);
+        }
+        reader.Close();
+        return View();
+    }
+
+    public IActionResult YouCollections()
+    {
+        string serializedModelList = TempData["ModelList"] as string;
+        if (serializedModelList == null)
+        {
+            return View();
+        }
+        else
+        {
+            List<MyViewModels> modelList = JsonConvert.DeserializeObject<List<MyViewModels>>(serializedModelList);
+            return View(modelList);
+        }
+    }
+
+    [HttpPost]
+    public IActionResult YouCollections(int id, string name, string tags, string action,
+        string string1, string string2, string string3, string multiline1, string multiline2, string multiline3,
+        string int1, string int2, string int3, string checkbox1, string checkbox2, string checkbox3, string data1, string data2, string data3)
+    {
+        MySqlConnection connection = Connection();
+        if (action == "update")
+        {
+            string query = $"UPDATE items SET name='{name}', tags='{tags}', " +
+                $"string1 ='{string1}', string2='{string2}', string3='{string3}', " +
+                $"multiline1 ='{multiline1}', multiline2 ='{multiline2}', multiline3 ='{multiline3}', " +
+                $"int_1 ='{int1}', int_2 ='{int2}', int_3 ='{int3}', " +
+                $"checkbox1 ='{checkbox1}', checkbox2 ='{checkbox2}', checkbox3 ='{checkbox3}', " +
+                $"data1 ='{data1}', data2 ='{data2}', data3 ='{data3}' WHERE id_item={id};";
+            MySqlCommand command = new MySqlCommand(query, connection);
+            int amount = Convert.ToInt32(command.ExecuteScalar());
+            if (amount > 1)
+            {
+
+            }
+            else if (action == "delete")
+            {
+            }
+        }
+        return RedirectToAction("YouCollections");
+    }
+
+    public IActionResult Kabinet()
+    {
+        return View();
+    }
+
+    public IActionResult Auth()
+    {
+        return View();
+    }
+
+    public IActionResult AddItems()
+    {
+        MySqlConnection connection = Connection();
         string query = $"SELECT * FROM collections where email='{userMail}';";
         MySqlCommand command = new MySqlCommand(query, connection);
         MySqlDataReader reader = command.ExecuteReader();
@@ -42,30 +123,12 @@ public class HomeController : Controller
                 model.Description = reader.GetString(3);
                 model.ImageUrl = reader.GetString(4);
                 model.Category = reader.GetString(5);
-                model.Id_list = reader.GetInt32(6);
                 collections.Add(model);
             }
             ViewBag.CollectionModels = collections;
             return View(collections);
         }
         reader.Close();
-        return View();
-    }
-
-    public IActionResult YouCollections()
-    {
-        string serializedModelList = TempData["ModelList"] as string;
-        List<MyViewModels> modelList = JsonConvert.DeserializeObject<List<MyViewModels>>(serializedModelList);
-        return View(modelList);
-    }
-
-    public IActionResult Kabinet()
-    {
-        return View();
-    }
-
-    public IActionResult Auth()
-    {
         return View();
     }
 
@@ -91,7 +154,28 @@ public class HomeController : Controller
             };
             modelList.Add(model);
         }
+        connection.Close();
         return View(modelList);
+    }
+
+    [HttpPost]
+    public IActionResult AddItems(string name, string tags)
+    {
+        //MySqlConnection connection = Connection();
+        //string users_query = $"INSERT INTO  items ( id_item ,  id_list ,  name ,  tags ," +
+        //        $"  string1 ,  string2 ,  string3 ,  multiline1 ,  multiline2 ,  multiline3 ," +
+        //        $"  int_1 ,  int_2 ,  int_3 ,  checkbox1 ,  checkbox2 ,  checkbox3 ,  data1 ,  data2 ,  data3 ) " +
+        //        $"VALUES(default, '{id_list}', '{name_item}', '{tags}', '{string1}', '{string2}', '{string3}', " +
+        //        $"'{multiline1}', '{multiline2}', '{multiline3}', '{int1}', '{int2}', '{int3}', '{checkbox1}', '{checkbox2}', '{checkbox3}'," +
+        //        $" '{data1}', '{data2}', '{data3}');";
+        //MySqlCommand users_command = new MySqlCommand(users_query, connection);
+        //int amount = Convert.ToInt32(users_command.ExecuteScalar());
+        //if (amount > 1)
+        //{
+        //    string message = "Запись успешно обнавлена!";
+        //    ViewBag.Message = message;
+        //}
+        return View();
     }
 
     [HttpPost]
@@ -120,11 +204,25 @@ public class HomeController : Controller
                 ViewBag.Message = message;
             }
         }
+        else if (action == "add")
+        {
+            //ViewBag.Id_list = id_list;
+            //return RedirectToAction("AddItems");
+            
+        }
         else if (action == "content") {
-            string query = $"SELECT * FROM items join lists on lists.id_list=items.id_list WHERE id_collection={id};";
+            string query = $"SELECT items.id_item, items.id_list, items.name, items.tags, items.string1, items.string2, items.string3," +
+                $" items.multiline1, items.multiline2, items.multiline3, items.int_1, items.int_2, items.int_3, " +
+                $"items.checkbox1, items.checkbox2, items.checkbox3, items.data1, items.data2, items.data3, " +
+                $"lists.string1_name, lists.string2_name,  lists.string3_name,  " +
+                $"lists.multiline1_name, lists.multiline2_name, lists.multiline3_name, lists.int1_name, lists.int2_name, lists.int3_name," +
+                $" lists.checkbox1_name, lists.checkbox2_name, lists.checkbox3_name," +
+                $" lists.data1_name, lists.data2_name, lists.data3_name " +
+                $"FROM items JOIN lists ON lists.id_list = items.id_list " +
+                $"JOIN collections ON collections.id_collection = lists.id_collection WHERE collections.id_collection = {id};";
             MySqlCommand command = new MySqlCommand(query, connection);
             int amount = Convert.ToInt32(command.ExecuteScalar());
-            if (amount > 1)
+            if (amount >= 1)
             {
                 List<MyViewModels> modelList = new List<MyViewModels>();
                 MySqlDataReader reader = command.ExecuteReader();
@@ -141,80 +239,83 @@ public class HomeController : Controller
                     model.Items.Id_list = reader.GetInt32(1);
                     model.Items.Name = reader.GetString(2);
                     model.Items.Tags = reader.GetString(3);
-                    if (!reader.IsDBNull(4) && !reader.IsDBNull(22))
+                    if (!reader.IsDBNull(4) && !reader.IsDBNull(19))
                     {
                         model.Items.String1 = reader.GetString(4);
-                        model.Lists.String1_name = reader.GetString(22);
+                        model.Lists.String1_name = reader.GetString(19);
                     }
-                    if (!reader.IsDBNull(5) && !reader.IsDBNull(24))
+                    if (!reader.IsDBNull(5) && !reader.IsDBNull(20))
                     {
                         model.Items.String2 = reader.GetString(5);
-                        model.Lists.String2_name = reader.GetString(24);
+                        model.Lists.String2_name = reader.GetString(20);
                     }
-                    if (!reader.IsDBNull(6) && !reader.IsDBNull(26))
+                    if (!reader.IsDBNull(6) && !reader.IsDBNull(21))
                     {
                         model.Items.String3 = reader.GetString(6);
-                        model.Lists.String3_name = reader.GetString(26);
+                        model.Lists.String3_name = reader.GetString(21);
                     }
-                    if (!reader.IsDBNull(7) && !reader.IsDBNull(28))
+                    if (!reader.IsDBNull(7) && !reader.IsDBNull(22))
                     {
                         model.Items.Multiline1 = reader.GetString(7);
-                        model.Lists.Multiline1_name = reader.GetString(28);
+                        model.Lists.Multiline1_name = reader.GetString(22);
                     }
-                    if (!reader.IsDBNull(8) && !reader.IsDBNull(30))
+                    if (!reader.IsDBNull(8) && !reader.IsDBNull(23))
                     {
                         model.Items.Multiline2 = reader.GetString(8);
-                        model.Lists.Multiline2_name = reader.GetString(30);
+                        model.Lists.Multiline2_name = reader.GetString(23);
                     }
-                    if (!reader.IsDBNull(9) && !reader.IsDBNull(32))
+                    if (!reader.IsDBNull(9) && !reader.IsDBNull(24))
                     {
                         model.Items.Multiline3 = reader.GetString(9);
-                        model.Lists.Multiline3_name = reader.GetString(32);
+                        model.Lists.Multiline3_name = reader.GetString(24);
                     }
-                    if (!reader.IsDBNull(10) && !reader.IsDBNull(34))
+                    if (!reader.IsDBNull(10) && !reader.IsDBNull(25))
                     {
                         model.Items.Int1 = reader.GetInt32(10);
-                        model.Lists.Int1_name = reader.GetString(34);
+                        model.Lists.Int1_name = reader.GetString(25);
                     }
-                    if (!reader.IsDBNull(11) && !reader.IsDBNull(36))
+                    if (!reader.IsDBNull(11) && !reader.IsDBNull(26))
                     {
                         model.Items.Int2 = reader.GetInt32(11);
-                        model.Lists.Int2_name = reader.GetString(36);
+                        model.Lists.Int2_name = reader.GetString(26);
                     }
-                    if (!reader.IsDBNull(12) && !reader.IsDBNull(38))
+                    if (!reader.IsDBNull(12) && !reader.IsDBNull(27))
                     {
                         model.Items.Int3 = reader.GetInt32(12);
-                        model.Lists.Int3_name = reader.GetString(38);
+                        model.Lists.Int3_name = reader.GetString(27);
                     }
-                    if (!reader.IsDBNull(13) && !reader.IsDBNull(40))
+                    if (!reader.IsDBNull(13) && !reader.IsDBNull(28))
                     {
                         model.Items.Checkbox1 = (Checkbox)reader.GetInt32(13);
-                        model.Lists.Checkbox1_name = reader.GetString(40);
+                        model.Lists.Checkbox1_name = reader.GetString(28);
                     }
-                    if (!reader.IsDBNull(14) && !reader.IsDBNull(42))
+                    if (!reader.IsDBNull(14) && !reader.IsDBNull(29))
                     {
                         model.Items.Checkbox2 = (Checkbox)reader.GetInt32(14);
-                        model.Lists.Checkbox2_name = reader.GetString(42);
+                        model.Lists.Checkbox2_name = reader.GetString(29);
                     }
-                    if (!reader.IsDBNull(15) && !reader.IsDBNull(44))
+                    if (!reader.IsDBNull(15) && !reader.IsDBNull(30))
                     {
                         model.Items.Checkbox3 = (Checkbox)reader.GetInt32(15);
-                        model.Lists.Checkbox3_name = reader.GetString(44);
+                        model.Lists.Checkbox3_name = reader.GetString(30);
                     }
-                    if (!reader.IsDBNull(16) && !reader.IsDBNull(46))
+                    if (!reader.IsDBNull(16) && !reader.IsDBNull(31))
                     {
-                        model.Items.Data1 = reader.GetDateTime(16);
-                        model.Lists.Data1_name = reader.GetString(46);
+                        DateTime data1 = reader.GetDateTime(16);
+                        string data1String = data1.ToString("yyyy-MM-dd");
+                        model.Items.Data1 = data1String;
+
+                        model.Lists.Data1_name = reader.GetString(31);
                     }
-                    if (!reader.IsDBNull(17) && !reader.IsDBNull(48))
+                    if (!reader.IsDBNull(17) && !reader.IsDBNull(32))
                     {
-                        model.Items.Data2 = reader.GetDateTime(17);
-                        model.Lists.Data2_name = reader.GetString(48);
+                        model.Items.Data2 = reader.GetString(17);
+                        model.Lists.Data2_name = reader.GetString(32);
                     }
-                    if (!reader.IsDBNull(18) && !reader.IsDBNull(50))
+                    if (!reader.IsDBNull(18) && !reader.IsDBNull(33))
                     {
-                        model.Items.Data3 = reader.GetDateTime(18);
-                        model.Lists.Data3_name = reader.GetString(50);
+                        model.Items.Data2 = reader.GetString(18);
+                        model.Lists.Data2_name = reader.GetString(33);
                     }
                     modelList.Add(model);
                 }
@@ -226,8 +327,7 @@ public class HomeController : Controller
             }
             else
             {
-                string message = "Не содержит айтемов!";
-                ViewBag.Message = message;
+                return RedirectToAction("YouCollections");
             }
         }
         return RedirectToAction("Table");
@@ -267,7 +367,6 @@ public class HomeController : Controller
     {
         var indices = selectedBlock.Split(',');
         MySqlConnection connection = Connection();
-        connection.Open();
         foreach (var index in indices)
         {
             int id = int.Parse(index);
@@ -292,7 +391,6 @@ public class HomeController : Controller
     public void Block_you(int id)
     {
         MySqlConnection connection = Connection();
-        connection.Open();
         string query = $"SELECT email FROM users WHERE dostup='blocked' and id_user='{id}';";
         using (MySqlCommand command = new MySqlCommand(query, connection))
         {
@@ -312,7 +410,6 @@ public class HomeController : Controller
     {
         var indices = selectedUnblock.Split(',');
         MySqlConnection connection = Connection();
-        connection.Open();
         foreach (var index in indices)
         {
             int id = int.Parse(index);
@@ -348,7 +445,6 @@ public class HomeController : Controller
                 model.Description = reader.GetString(3);
                 model.ImageUrl = reader.GetString(4);
                 model.Category = reader.GetString(5);
-                model.Id_list = reader.GetInt32(6);
                 collections.Add(model);
             }
             ViewBag.CollectionModels = collections;
@@ -381,7 +477,7 @@ public class HomeController : Controller
             }
             else
             {
-                string query_insert = $"INSERT INTO users VALUES ('{email}','{pass}','user');";
+                string query_insert = $"INSERT INTO users VALUES (default, '{email}','{pass}','user','active');";
                 MySqlCommand command_insert = new MySqlCommand(query_insert, connection);
                 int i = command_insert.ExecuteNonQuery();
                 if (i > -1)
@@ -406,6 +502,7 @@ public class HomeController : Controller
                 }
             }
         }
+        connection.Close();
         return View();
     }
 
@@ -488,7 +585,6 @@ public class HomeController : Controller
                 model.Description = reader.GetString(3);
                 model.ImageUrl = reader.GetString(4);
                 model.Category = reader.GetString(5);
-                model.Id_list = reader.GetInt32(6);
                 collections.Add(model);
             }
             ViewBag.CollectionModels = collections;
@@ -591,17 +687,17 @@ public class HomeController : Controller
             if (!reader.IsDBNull(26) && reader.GetInt32(27) != 0)
             {
                 model.Lists.Data1_name = reader.GetString(26);
-                model.Items.Data1 = reader.GetDateTime(27);
+                model.Items.Data1 = reader.GetString(27);
             }
             if (!reader.IsDBNull(28) && reader.GetInt32(29) != 0)
             {
                 model.Lists.Data2_name = reader.GetString(28);
-                model.Items.Data2 = reader.GetDateTime(29);
+                model.Items.Data2 = reader.GetString(29);
             }
             if (!reader.IsDBNull(30) && reader.GetInt32(31) != 0)
             {
                 model.Lists.Data3_name = reader.GetString(30);
-                model.Items.Data3 = reader.GetDateTime(31);
+                model.Items.Data3 = reader.GetString(31);
             }
             modelList.Add(model);
         }
@@ -681,9 +777,11 @@ public class HomeController : Controller
             command.Parameters.AddWithValue("@data3", data3);
             command.ExecuteScalar();
             string imageUrl = await Updownload(image);
-            long lastInsertId = command.LastInsertedId;
-            string query_collections = $"INSERT INTO `collections`(`id_collection`, `email`, `name`, `description`, `imageUrl`, `category`, `id_list`) " +
-              $"VALUES (default,'{email}','{name}','{description}','{imageUrl}','{category}', '{lastInsertId}');";
+            string query_id = $"SELECT collections.id_user FROM collections JOIN users ON collections.id_user = users.id_user WHERE users.email = '{email}';";
+            MySqlCommand command_id = new MySqlCommand(query_id, connection);
+            string id_user = command_id.ExecuteScalar()?.ToString();
+            string query_collections = $"INSERT INTO `collections`(`id_collection`, `id_user`, `name`, `description`, `imageUrl`, `category`) " +
+              $"VALUES (default,'{id_user}','{name}','{description}','{ViewBag.ImageUrl}','{category}');";
             MySqlCommand command_collections = new MySqlCommand(query_collections, connection);
             command_collections.ExecuteNonQuery();
             connection.Close();
@@ -692,8 +790,11 @@ public class HomeController : Controller
         {
             MySqlConnection connection = Connection();
             string imageUrl = await Updownload(image);
-            string query_collections = $"INSERT INTO `collections`(`id_collection`, `email`, `name`, `description`, `imageUrl`, `category`, `id_list`) " +
-              $"VALUES (default,'{email}','{name}','{description}','{ViewBag.ImageUrl}','{category}', '0');";
+            string query_id = $"SELECT collections.id_user FROM collections JOIN users ON collections.id_user = users.id_user WHERE users.email = '{email}';";
+            MySqlCommand command_id = new MySqlCommand(query_id, connection);
+            string id_user = command_id.ExecuteScalar()?.ToString();
+            string query_collections = $"INSERT INTO `collections`(`id_collection`, `id_user`, `name`, `description`, `imageUrl`, `category`) " +
+              $"VALUES (default,'{id_user}','{name}','{description}','{ViewBag.ImageUrl}','{category}');";
             MySqlCommand command_collections = new MySqlCommand(query_collections, connection);
             command_collections.ExecuteNonQuery();
         }
@@ -717,7 +818,7 @@ public class HomeController : Controller
 
     public MySqlConnection Connection()
     {
-        MySqlConnection connection = new MySqlConnection("Server=mysql6013.site4now.net;Database=db_aa373f_root;Uid=aa373f_root;Pwd=rootroot1;Charset=utf8;");
+        MySqlConnection connection = new MySqlConnection("Server=mysql6013.site4now.net;Database=db_aa373f_root;Uid=aa373f_root;Pwd=rootroot1;Charset=utf8;Allow Zero Datetime=true;");
         connection.Open();
         return connection;
     }

@@ -33,7 +33,7 @@
                         <div class="col-md-4">
                             <div class="card__item">
                                 <div class="card__cover">
-                                    <img class="card__img" src="@item.ImageUrl" alt="" />
+                                    <img class="card__img" src="@item.ImageUrl" alt=""/>
                                 </div>
                                 <div class="card__info">
                                     <div>
@@ -43,7 +43,7 @@
                                     <p class="card__comment">@item.Email<span class="like">100</span><img src="~/images/like.png" alt="" width="25px" height="25px" /></p>
                                 </div>
                                 <form method="post" asp-action="Items" asp-controller="Home">
-                                    <input type="hidden" name="id" value="@item.Id_list" />
+                                    <input type="hidden" name="id" value="@item.Id_collection" />
                                     <button type="submit" class="card__link">ПОДРОБНЕЕ</button>
                                 </form>
 

@@ -9,7 +9,6 @@ namespace project.Models
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public string Category { get; set; }
-        public int Id_list { get; set; }
     }
 }
 
