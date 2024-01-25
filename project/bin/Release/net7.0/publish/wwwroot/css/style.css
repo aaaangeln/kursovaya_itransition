@@ -105,10 +105,12 @@ body{
 .card__name{
     font-size: 20px;
     color: rgba(255, 255, 255, 0.8);
+    text-align: left;
 }
-.card__description{
+.card__description {
     font-size: 20px;
     font-weight: 700;
+    text-align: left;
 }
 .card__comment{
     text-align: right;
@@ -152,4 +154,7 @@ h4 {
 }
 .container {
     text-align: center;
+}
+.text {
+    text-align: left;
 }

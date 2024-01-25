@@ -70,72 +70,73 @@
                         <input type="text" name="name" class="Input" placeholder="Название" required /><br>
                         <input type="text" name="tags" class="Input" placeholder="Тег" required /><br>
                         @foreach (var mod in Model)
+                        {
+                            @if (!string.IsNullOrEmpty(@mod.Lists.String1_name) && !string.IsNullOrEmpty(@mod.Items.String1))
                             {
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.String1_name) && !string.IsNullOrEmpty(@mod.Items.String1))
-                                            {
-                                            <input type="text" name="string1" placeholder="Введите @mod.Lists.String1_name" required />
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.String2_name) && !string.IsNullOrEmpty(@mod.Items.String2))
-                                            {
-                                            <input type="text" name="string2" placeholder="Введите @mod.Lists.String2_name" required />
-                                            }
-                                        @*@if (!string.IsNullOrEmpty(@mod.Lists.String3_name) && !string.IsNullOrEmpty(@mod.Items.String3))
-                                            {
-                                            <th>@mod.Lists.String3_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Multiline1_name) && !string.IsNullOrEmpty(@mod.Items.Multiline1))
-                                            {
-                                            <th>@mod.Lists.Multiline1_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Multiline2_name) && !string.IsNullOrEmpty(@mod.Items.Multiline2))
-                                            {
-                                            <th>@mod.Lists.Multiline2_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Multiline3_name) && !string.IsNullOrEmpty(@mod.Items.Multiline3))
-                                            {
-                                            <th>@mod.Lists.Multiline3_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Int1_name) && !string.IsNullOrEmpty(@mod.Items.Int1.ToString()))
-                                            {
-                                            <th>@mod.Lists.Int1_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Int2_name) && !string.IsNullOrEmpty(@mod.Items.Int2.ToString()))
-                                            {
-                                            <th>@mod.Lists.Int2_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Int3_name) && !string.IsNullOrEmpty(@mod.Items.Int3.ToString()))
-                                            {
-                                            <th>@mod.Lists.Int3_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox1_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox1.ToString()))
-                                            {
-                                            <th>@mod.Lists.Checkbox1_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox2_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox2.ToString()))
-                                            {
-                                            <th>@mod.Lists.Checkbox2_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox3_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox3.ToString()))
-                                            {
-                                            <th>@mod.Lists.Checkbox3_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Data1_name) && !string.IsNullOrEmpty(@mod.Items.Data1.ToString()))
-                                            {
-                                            <th>@mod.Lists.Data1_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Data2_name) && !string.IsNullOrEmpty(@mod.Items.Data2.ToString()))
-                                            {
-                                            <th>@mod.Lists.Data2_name</th>
-                                            }
-                                        @if (!string.IsNullOrEmpty(@mod.Lists.Data3_name) && !string.IsNullOrEmpty(@mod.Items.Data3.ToString()))
-                                            {
-                                            <th>@mod.Lists.Data3_name</th>
-                                            }*@
+                                <input type="text" name="string1" placeholder="Введите @mod.Lists.String1_name" required />
                             }
+                            @if (!string.IsNullOrEmpty(@mod.Lists.String2_name) && !string.IsNullOrEmpty(@mod.Items.String2))
+                            {
+                                <input type="text" name="string2" placeholder="Введите @mod.Lists.String2_name" required />
+                            }
+                            @*@if (!string.IsNullOrEmpty(@mod.Lists.String3_name) && !string.IsNullOrEmpty(@mod.Items.String3))
+                {
+                <th>@mod.Lists.String3_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Multiline1_name) && !string.IsNullOrEmpty(@mod.Items.Multiline1))
+                {
+                <th>@mod.Lists.Multiline1_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Multiline2_name) && !string.IsNullOrEmpty(@mod.Items.Multiline2))
+                {
+                <th>@mod.Lists.Multiline2_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Multiline3_name) && !string.IsNullOrEmpty(@mod.Items.Multiline3))
+                {
+                <th>@mod.Lists.Multiline3_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Int1_name) && !string.IsNullOrEmpty(@mod.Items.Int1.ToString()))
+                {
+                <th>@mod.Lists.Int1_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Int2_name) && !string.IsNullOrEmpty(@mod.Items.Int2.ToString()))
+                {
+                <th>@mod.Lists.Int2_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Int3_name) && !string.IsNullOrEmpty(@mod.Items.Int3.ToString()))
+                {
+                <th>@mod.Lists.Int3_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox1_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox1.ToString()))
+                {
+                <th>@mod.Lists.Checkbox1_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox2_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox2.ToString()))
+                {
+                <th>@mod.Lists.Checkbox2_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Checkbox3_name) && !string.IsNullOrEmpty(@mod.Items.Checkbox3.ToString()))
+                {
+                <th>@mod.Lists.Checkbox3_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Data1_name) && !string.IsNullOrEmpty(@mod.Items.Data1.ToString()))
+                {
+                <th>@mod.Lists.Data1_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Data2_name) && !string.IsNullOrEmpty(@mod.Items.Data2.ToString()))
+                {
+                <th>@mod.Lists.Data2_name</th>
+                }
+            @if (!string.IsNullOrEmpty(@mod.Lists.Data3_name) && !string.IsNullOrEmpty(@mod.Items.Data3.ToString()))
+                {
+                <th>@mod.Lists.Data3_name</th>
+                }*@
+                        }
 
-                </div>
+                        <input type="submit" class="Input Input-submit" value="Записать">
+                    </div>
 
-                <input type="submit" class="Input Input-submit" value="Записать">
+                
             </form>
         </div>
     </section>
