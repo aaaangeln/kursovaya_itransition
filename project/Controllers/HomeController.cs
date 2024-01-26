@@ -29,6 +29,11 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    public IActionResult Items_auth()
+    {
+        return View();
+    }
+
     public IActionResult Table()
     {
         MySqlConnection connection = Connection();
@@ -684,6 +689,113 @@ public class HomeController : Controller
         reader.Close();
         connection.Close();
         return View();
+    }
+
+    [HttpPost]
+    public IActionResult Items_auth(int id)
+    {
+        List<MyViewModels> modelList = new List<MyViewModels>();
+        MySqlConnection connection = Connection();
+        string query = $"SELECT items.name, items.tags, lists.string1_name, items.string1," +
+            $"lists.string2_name, items.string2, lists.string3_name, items.string3, lists.multiline1_name, items.multiline1," +
+            $"lists.multiline2_name, items.multiline2, lists.multiline3_name, items.multiline3, lists.int1_name, items.int_1, " +
+            $"lists.int2_name, items.int_2, lists.int3_name, items.int_3, lists.checkbox1_name, items.checkbox1," +
+            $"lists.checkbox2_name, items.checkbox2, lists.checkbox3_name, items.checkbox3, " +
+            $"lists.data1_name, items.data1, lists.data2_name, items.data2, " +
+            $"lists.data3_name, items.data3 FROM lists JOIN items ON lists.id_list = items.id_list WHERE id_collection = {id};";
+        MySqlCommand command = new MySqlCommand(query, connection);
+        MySqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            var lists = new Lists();
+            var items = new Items();
+            var model = new MyViewModels()
+            {
+                Lists = lists,
+                Items = items
+            };
+            model.Items.Name = reader.GetString(0);
+            model.Items.Tags = reader.GetString(1);
+            if (!reader.IsDBNull(2) && !reader.IsDBNull(3))
+            {
+                model.Lists.String1_name = reader.GetString(2);
+                model.Items.String1 = reader.GetString(3);
+            }
+            if (!reader.IsDBNull(4) && !reader.IsDBNull(5))
+            {
+                model.Lists.String2_name = reader.GetString(4);
+                model.Items.String2 = reader.GetString(5);
+            }
+            if (!reader.IsDBNull(6) && !reader.IsDBNull(7))
+            {
+                model.Lists.String3_name = reader.GetString(6);
+                model.Items.String3 = reader.GetString(7);
+            }
+            if (!reader.IsDBNull(8) && !reader.IsDBNull(9))
+            {
+                model.Lists.Multiline1_name = reader.GetString(8);
+                model.Items.Multiline1 = reader.GetString(9);
+            }
+            if (!reader.IsDBNull(10) && !reader.IsDBNull(11))
+            {
+                model.Lists.Multiline2_name = reader.GetString(10);
+                model.Items.Multiline2 = reader.GetString(11);
+            }
+            if (!reader.IsDBNull(12) && !reader.IsDBNull(13))
+            {
+                model.Lists.Multiline3_name = reader.GetString(12);
+                model.Items.Multiline3 = reader.GetString(13);
+            }
+            if (!reader.IsDBNull(14) && reader.GetInt32(15) != 0)
+            {
+                model.Lists.Int1_name = reader.GetString(14);
+                model.Items.Int1 = reader.GetInt32(15);
+            }
+            if (!reader.IsDBNull(16) && reader.GetInt32(17) != 0)
+            {
+                model.Lists.Int2_name = reader.GetString(16);
+                model.Items.Int2 = reader.GetInt32(17);
+            }
+            if (!reader.IsDBNull(18) && reader.GetInt32(19) != 0)
+            {
+                model.Lists.Int3_name = reader.GetString(18);
+                model.Items.Int3 = reader.GetInt32(19);
+            }
+            if (!reader.IsDBNull(20) && reader.GetInt32(21) != 0)
+            {
+                model.Lists.Checkbox1_name = reader.GetString(20);
+                model.Items.Checkbox1 = (Checkbox)reader.GetInt32(21);
+            }
+            if (!reader.IsDBNull(22) && reader.GetInt32(23) != 0)
+            {
+                model.Lists.Checkbox2_name = reader.GetString(22);
+                model.Items.Checkbox2 = (Checkbox)reader.GetInt32(23);
+            }
+            if (!reader.IsDBNull(24) && reader.GetInt32(25) != 0)
+            {
+                model.Lists.Checkbox3_name = reader.GetString(24);
+                model.Items.Checkbox3 = (Checkbox)reader.GetInt32(25);
+            }
+            if (!reader.IsDBNull(26) && reader.GetInt32(27) != 0)
+            {
+                model.Lists.Data1_name = reader.GetString(26);
+                model.Items.Data1 = reader.GetString(27);
+            }
+            if (!reader.IsDBNull(28) && reader.GetInt32(29) != 0)
+            {
+                model.Lists.Data2_name = reader.GetString(28);
+                model.Items.Data2 = reader.GetString(29);
+            }
+            if (!reader.IsDBNull(30) && reader.GetInt32(31) != 0)
+            {
+                model.Lists.Data3_name = reader.GetString(30);
+                model.Items.Data3 = reader.GetString(31);
+            }
+            modelList.Add(model);
+        }
+        reader.Close();
+        connection.Close();
+        return View(modelList);
     }
 
     public IActionResult Items()

@@ -42,7 +42,7 @@
                                     </div>
                                     <p class="card__comment"><span class="like">100</span><img src="~/images/like.png" alt="" width="25px" height="25px" /></p>
                                 </div>
-                                <form method="post" asp-action="Items" asp-controller="Home">
+                                <form method="post" asp-action="Items_auth" asp-controller="Home">
                                     <input type="hidden" name="id" value="@item.Id_collection" />
                                     <button type="submit" class="card__link">ПОДРОБНЕЕ</button>
                                 </form>
